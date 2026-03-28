@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>mika lukkarinen:~$</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=VT323&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --red: #ff2a2a;
+    --red-dim: #cc1f1f;
+    --red-faint: #2a0508;
+    --blue: #4d79ff;
+    --blue-dim: #2a4acc;
+    --blue-faint: #05081a;
+    --accent: #ff7070;
+    --bg: #04060f;
+    --surface: #070b18;
+    --border: #0f1a3a;
+    --text: #c8d4f0;
+    --text-dim: #3a4f7a;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.08) 2px, rgba(0,0,0,0.08) 4px);
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  @keyframes flicker { 0%,100%{opacity:1}92%{opacity:1}93%{opacity:.85}94%{opacity:1}96%{opacity:.9}97%{opacity:1} }
+  body { animation: flicker 8s infinite; }
+
+  @keyframes blink { 0%,100%{opacity:1}50%{opacity:0} }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)} }
+
+  .container { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+
+  /* TOPBAR */
+  .topbar {
+    position: fixed; top:0; left:0; right:0; z-index:100;
+    background: rgba(4,6,15,0.96);
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(4px);
+    padding: 10px 24px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .topbar-brand { color: var(--red); font-size: 13px; }
+  .topbar-brand em { color: var(--text-dim); font-style: normal; }
+  .topbar-brand b { color: var(--blue); font-weight: 400; }
+  .topbar-nav { display: flex; gap: 24px; }
+  .topbar-nav a { color: var(--text-dim); text-decoration: none; font-size: 12px; letter-spacing: .05em; transition: color .2s; }
+  .topbar-nav a:hover { color: var(--red); }
+  .topbar-nav a::before { content: './'; color: var(--red-dim); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 80px 24px 60px;
+    max-width: 900px; margin: 0 auto;
+  }
+  .prompt-line { color: var(--text-dim); font-size: 13px; margin-bottom: 8px; }
+  .pl-user { color: var(--red); }
+  .pl-host { color: var(--blue); }
+  .pl-path { color: var(--accent); }
+
+  .hero-name {
+    font-family: 'VT323', monospace;
+    font-size: clamp(52px, 10vw, 96px);
+    color: var(--red);
+    line-height: 1; letter-spacing: 2px;
+    text-shadow: 0 0 30px rgba(255,42,42,0.5), 0 0 70px rgba(255,42,42,0.2);
+    animation: fadeUp .8s ease both;
+    margin-bottom: 4px;
+  }
+  .hero-cursor {
+    display: inline-block; width: 10px; height: 18px;
+    background: var(--red); margin-left: 4px; vertical-align: middle;
+    animation: blink 1s step-end infinite;
+  }
+  .hero-tags { font-size: 13px; margin-bottom: 32px; animation: fadeUp .8s .15s ease both; }
+  .hero-tags .tag {
+    display: inline-block;
+    border: 1px solid var(--border);
+    color: var(--blue); padding: 2px 8px;
+    margin-right: 8px; margin-bottom: 6px;
+    font-size: 11px; letter-spacing: .08em;
+  }
+  .hero-summary {
+    max-width: 560px; color: var(--text); font-size: 13px; line-height: 1.8;
+    animation: fadeUp .8s .3s ease both;
+    border-left: 2px solid var(--red-dim);
+    padding-left: 16px; margin-bottom: 40px;
+  }
+  .contact-row { display: flex; flex-wrap: wrap; gap: 16px; animation: fadeUp .8s .45s ease both; }
+  .contact-row a { color: var(--text-dim); text-decoration: none; font-size: 12px; display: flex; align-items: center; gap: 6px; transition: color .2s; }
+  .contact-row a:hover { color: var(--red); }
+  .contact-row a::before { content: '→'; color: var(--red-dim); }
+
+  /* SECTIONS */
+  section { padding: 80px 0; border-top: 1px solid var(--border); }
+  .section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 40px; }
+  .section-header .cmd { color: var(--red); font-size: 11px; letter-spacing: .1em; }
+  .section-header h2 { font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--text-dim); }
+  .section-header::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  /* SKILLS */
+  .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+  .skill-block { border: 1px solid var(--border); padding: 16px; background: var(--surface); transition: border-color .2s, background .2s; }
+  .skill-block:hover { border-color: var(--red-dim); background: var(--red-faint); }
+  .skill-cat { font-size: 10px; letter-spacing: .12em; color: var(--text-dim); margin-bottom: 8px; text-transform: uppercase; }
+  .skill-cat::before { content: '# '; color: var(--blue); }
+  .skill-items { display: flex; flex-wrap: wrap; gap: 6px; }
+  .skill-tag { font-size: 11px; color: var(--red); background: rgba(255,42,42,0.07); border: 1px solid rgba(255,42,42,0.22); padding: 2px 8px; }
+
+  /* EXPERIENCE */
+  .exp-list { display: flex; flex-direction: column; gap: 32px; }
+  .exp-item { display: grid; grid-template-columns: 140px 1fr; gap: 0 24px; position: relative; }
+  .exp-item::before { content: ''; position: absolute; left: 132px; top: 0; bottom: -32px; width: 1px; background: var(--border); }
+  .exp-item:last-child::before { display: none; }
+  .exp-date { font-size: 11px; color: var(--text-dim); padding-top: 2px; text-align: right; }
+  .exp-dot { position: absolute; left: 128px; top: 6px; width: 9px; height: 9px; border: 1px solid var(--red); background: var(--bg); box-shadow: 0 0 8px rgba(255,42,42,0.5); }
+  .exp-content { padding-left: 24px; }
+  .exp-role { font-size: 15px; color: var(--red); margin-bottom: 2px; font-weight: 500; }
+  .exp-company { font-size: 11px; color: var(--blue); margin-bottom: 8px; letter-spacing: .06em; }
+  .exp-desc { font-size: 12px; color: var(--text); line-height: 1.8; }
+  .exp-tech { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .exp-tech span { font-size: 10px; color: var(--blue); border: 1px solid rgba(77,121,255,0.25); padding: 1px 7px; background: rgba(77,121,255,0.05); }
+
+  /* EDUCATION */
+  .edu-block { border: 1px solid var(--border); background: var(--surface); padding: 24px; position: relative; }
+  .edu-block::before { content: 'DEGREE'; position: absolute; top: -1px; right: 24px; font-size: 9px; letter-spacing: .15em; color: var(--red); background: var(--red-faint); border: 1px solid var(--border); border-top: none; padding: 2px 8px; }
+  .edu-degree { font-size: 15px; color: var(--red); margin-bottom: 4px; }
+  .edu-prog { font-size: 12px; color: var(--blue); margin-bottom: 4px; }
+  .edu-school { font-size: 11px; color: var(--text-dim); margin-bottom: 16px; }
+  .edu-meta { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 20px; }
+  .edu-meta-item { font-size: 11px; color: var(--text-dim); }
+  .edu-meta-item strong { color: var(--blue); }
+  .edu-meta-item a { color: var(--blue); text-decoration: none; border-bottom: 1px solid rgba(77,121,255,0.3); transition: color .2s; }
+  .edu-meta-item a:hover { color: var(--red); }
+
+  .course-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 6px; margin-top: 12px; }
+  .course-item { font-size: 11px; color: var(--text-dim); padding: 4px 8px; border-left: 2px solid var(--border); transition: border-color .2s, color .2s; }
+  .course-item:hover { border-color: var(--red-dim); color: var(--text); }
+
+  /* SCROLL REVEAL */
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* FOOTER */
+  footer { border-top: 1px solid var(--border); padding: 32px 24px; text-align: center; font-size: 11px; color: var(--text-dim); }
+  footer .prompt { color: var(--red); }
+
+  @media(max-width:600px) {
+    .exp-item { grid-template-columns: 1fr; }
+    .exp-item::before, .exp-dot { display: none; }
+    .exp-date { text-align: left; }
+    .exp-content { padding-left: 0; }
+    .topbar-nav { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-brand">
+    <span style="color:var(--red)">mika</span><em>_</em><b>lukkarinen</b><em>:~$</em>
+  </div>
+  <nav class="topbar-nav">
+    <a href="#skills">skills</a>
+    <a href="#experience">experience</a>
+    <a href="#education">education</a>
+    <a href="#contact">contact</a>
+  </nav>
+</div>
+
+<div class="hero">
+  <div class="prompt-line">
+    <span class="pl-user">mika</span><span>_</span><span class="pl-host">lukkarinen</span><span>:</span><span class="pl-path">~</span><span>$ whoami</span>
+  </div>
+  <div class="hero-name">MIKA LUKKARINEN<span class="hero-cursor"></span></div>
+  <div class="hero-tags">
+    <span class="tag">SOFTWARE DEV</span>
+    <span class="tag">INFOSEC</span>
+    <span class="tag">FULL STACK</span>
+  </div>
+  <p class="hero-summary">
+    BBA graduate in Business Information Technology from Turku University of Applied Sciences.
+    Passionate about building robust applications and keeping them secure — from back-end APIs
+    and server-side scripting to application security and network hardening.
+  </p>
+  <div class="contact-row">
+    <a href="#contact">mlukkar@protonmail.com</a>
+    <a href="https://www.linkedin.com/in/mikal-352800296" target="_blank">linkedin</a>
+    <a>Espoo, Finland</a>
+  </div>
+</div>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="container">
+    <div class="section-header"><span class="cmd">$</span><h2>ls ./skills</h2></div>
+    <div class="skills-grid reveal">
+      <div class="skill-block">
+        <div class="skill-cat">Languages</div>
+        <div class="skill-items">
+          <span class="skill-tag">JavaScript</span>
+          <span class="skill-tag">TypeScript</span>
+          <span class="skill-tag">C++</span>
+          <span class="skill-tag">SQL</span>
+        </div>
+      </div>
+      <div class="skill-block">
+        <div class="skill-cat">Backend</div>
+        <div class="skill-items">
+          <span class="skill-tag">Node.js</span>
+          <span class="skill-tag">Sequelize</span>
+          <span class="skill-tag">Mongoose</span>
+          <span class="skill-tag">REST APIs</span>
+        </div>
+      </div>
+      <div class="skill-block">
+        <div class="skill-cat">Security</div>
+        <div class="skill-items">
+          <span class="skill-tag">AppSec</span>
+          <span class="skill-tag">Network Sec</span>
+          <span class="skill-tag">Risk Mgmt</span>
+          <span class="skill-tag">Data Privacy</span>
+        </div>
+      </div>
+      <div class="skill-block">
+        <div class="skill-cat">Systems</div>
+        <div class="skill-items">
+          <span class="skill-tag">Linux</span>
+          <span class="skill-tag">Servers &amp; OS</span>
+          <span class="skill-tag">Data Networks</span>
+          <span class="skill-tag">Cloud</span>
+        </div>
+      </div>
+      <div class="skill-block">
+        <div class="skill-cat">Dev Tools</div>
+        <div class="skill-items">
+          <span class="skill-tag">Git</span>
+          <span class="skill-tag">Godot</span>
+          <span class="skill-tag">Blender</span>
+          <span class="skill-tag">Unreal</span>
+        </div>
+      </div>
+      <div class="skill-block">
+        <div class="skill-cat">Concepts</div>
+        <div class="skill-items">
+          <span class="skill-tag">OOP</span>
+          <span class="skill-tag">SW Engineering</span>
+          <span class="skill-tag">Databases</span>
+          <span class="skill-tag">BI &amp; Analytics</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="container">
+    <div class="section-header"><span class="cmd">$</span><h2>cat experience.log</h2></div>
+    <div class="exp-list reveal">
+      <div class="exp-item">
+        <div class="exp-date">May – Jun 2024</div>
+        <div class="exp-dot"></div>
+        <div class="exp-content">
+          <div class="exp-role">Developer</div>
+          <div class="exp-company">theFIRMA &middot; Finland</div>
+          <div class="exp-desc">Back-end development on ProjectGate 2.0 — theFirma's internal staff web platform. Contributed to architecture decisions and core feature implementation.</div>
+          <div class="exp-tech"><span>Back-End</span><span>Node.js</span><span>Web Dev</span></div>
+        </div>
+      </div>
+      <div class="exp-item">
+        <div class="exp-date">Feb – Apr 2024</div>
+        <div class="exp-dot"></div>
+        <div class="exp-content">
+          <div class="exp-role">Turku Gamelab Developer</div>
+          <div class="exp-company">Turku University of Applied Sciences &middot; Turku</div>
+          <div class="exp-desc">Godot engine development with a focus on XR applications. Represented the Gamelab at industry events. Thesis work on procedural level generation with Godot.</div>
+          <div class="exp-tech"><span>Godot</span><span>GDScript</span><span>XR/VR</span><span>Proc. Gen</span></div>
+        </div>
+      </div>
+      <div class="exp-item">
+        <div class="exp-date">Jun – Jul 2022</div>
+        <div class="exp-dot"></div>
+        <div class="exp-content">
+          <div class="exp-role">Web Server &amp; App Developer</div>
+          <div class="exp-company">theFIRMA &middot; Turku Metropolitan Area</div>
+          <div class="exp-desc">Full-stack web development involving server-side scripting, database integration and application logic.</div>
+          <div class="exp-tech"><span>JavaScript</span><span>Node.js</span><span>Sequelize</span><span>SQL</span><span>Mongoose</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="container">
+    <div class="section-header"><span class="cmd">$</span><h2>cat education.md</h2></div>
+    <div class="reveal">
+      <div class="edu-block">
+        <div class="edu-degree">Bachelor of Business Administration</div>
+        <div class="edu-prog">Degree Programme in Business Information Technology</div>
+        <div class="edu-school">Turku University of Applied Sciences &middot; Aug 2020 – Jun 2024</div>
+        <div class="edu-meta">
+          <div class="edu-meta-item">Thesis: <a href="https://www.theseus.fi/handle/10024/863787" target="_blank">Godot &amp; procedural generation &#8599;</a></div>
+        </div>
+        <div style="font-size:10px;letter-spacing:.12em;color:var(--text-dim);margin-bottom:8px;text-transform:uppercase;"># Notable Coursework</div>
+        <div class="course-grid">
+          <div class="course-item">Information Security</div>
+          <div class="course-item">Application Security</div>
+          <div class="course-item">Network Security</div>
+          <div class="course-item">Infosec Risk Management</div>
+          <div class="course-item">Advanced App Development</div>
+          <div class="course-item">Back-End Development</div>
+          <div class="course-item">Browser-Side JavaScript</div>
+          <div class="course-item">Innovation Project</div>
+          <div class="course-item">GameEngines &ndash; UnrealEngine</div>
+          <div class="course-item">Game Development Essentials</div>
+          <div class="course-item">Software Engineering</div>
+          <div class="course-item">Data Networks</div>
+          <div class="course-item">Databases</div>
+          <div class="course-item">Servers &amp; Operating Systems</div>
+          <div class="course-item">BI &amp; Data Analytics</div>
+          <div class="course-item">Getting Familiar with AI</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="section-header"><span class="cmd">$</span><h2>ping mika</h2></div>
+    <div class="reveal">
+      <div style="border:1px solid var(--border);padding:20px;background:var(--surface);display:flex;flex-direction:column;gap:10px;margin-bottom:10px;">
+        <div style="font-size:12px;color:var(--text-dim)">
+          <span style="color:var(--red)">email</span> &nbsp;&nbsp;&nbsp; &#8594; &nbsp;
+          <a id="em" href="#" style="color:var(--text);text-decoration:none;"></a>
+        </div>
+        <div style="font-size:12px;color:var(--text-dim)">
+          <span style="color:var(--red)">linkedin</span> &nbsp; &#8594; &nbsp;
+          <a href="https://www.linkedin.com/in/mikal-352800296" target="_blank" style="color:var(--text);text-decoration:none;">linkedin.com/in/mikal-352800296</a>
+        </div>
+        <div style="font-size:12px;color:var(--text-dim)">
+          <span style="color:var(--red)">location</span> &nbsp; &#8594; &nbsp;
+          <span style="color:var(--text)">Espoo, Uusimaa, Finland</span>
+        </div>
+      </div>
+      <div style="font-size:11px;color:var(--text-dim);padding:0 4px;">Open to software development, full-stack, and information security roles.</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="prompt">mika@lukkarinen:~$ </span>exit 0 &nbsp;|&nbsp; &copy; 2026 Mika Lukkarinen
+</footer>
+
+<script>
+  // Scroll reveal — visible by default, enhanced with IntersectionObserver if available
+  var reveals = document.querySelectorAll('.reveal');
+
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.08 });
+    reveals.forEach(function(r) { io.observe(r); });
+  } else {
+    // Fallback: just show everything
+    reveals.forEach(function(r) { r.classList.add('visible'); });
+  }
+
+  // Glitch effect on name
+  setInterval(function() {
+    var name = document.querySelector('.hero-name');
+    if (name && Math.random() < 0.05) {
+      name.style.textShadow = '2px 0 var(--blue), -2px 0 var(--accent)';
+      setTimeout(function() {
+        name.style.textShadow = '0 0 30px rgba(255,42,42,0.5), 0 0 70px rgba(255,42,42,0.2)';
+      }, 80);
+    }
+  }, 1500);
+
+  // Assemble email to avoid Cloudflare mangling
+  var u = 'mlukkar';
+  var d = 'protonmail' + '.' + 'com';
+  var el = document.getElementById('em');
+  if (el) {
+    el.href = 'mai' + 'lto:' + u + '\x40' + d;
+    el.textContent = u + '\x40' + d;
+  }
+</script>
+</body>
+</html>
