@@ -7,59 +7,22 @@
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=VT323&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   :root {
-    --red: #ff2a2a;
-    --red-dim: #cc1f1f;
-    --red-faint: #2a0508;
-    --blue: #4d79ff;
-    --blue-dim: #2a4acc;
-    --blue-faint: #05081a;
-    --accent: #ff7070;
-    --bg: #04060f;
-    --surface: #070b18;
-    --border: #0f1a3a;
-    --text: #ffb3c6;
-    --text-dim: #a0607a;
+    --red: #ff2a2a; --red-dim: #cc1f1f; --red-faint: #2a0508;
+    --blue: #4d79ff; --blue-dim: #2a4acc; --blue-faint: #05081a;
+    --accent: #ff7070; --bg: #04060f; --surface: #070b18;
+    --border: #0f1a3a; --text: #ffb3c6; --text-dim: #a0607a;
   }
-
   html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 14px;
-    line-height: 1.6;
-    overflow-x: hidden;
-  }
-
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.08) 2px, rgba(0,0,0,0.08) 4px);
-    pointer-events: none;
-    z-index: 9999;
-  }
-
+  body { background: var(--bg); color: var(--text); font-family: 'JetBrains Mono', monospace; font-size: 14px; line-height: 1.6; overflow-x: hidden; animation: flicker 8s infinite; }
+  body::before { content: ''; position: fixed; inset: 0; background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.08) 2px, rgba(0,0,0,0.08) 4px); pointer-events: none; z-index: 9999; }
   @keyframes flicker { 0%,100%{opacity:1}92%{opacity:1}93%{opacity:.85}94%{opacity:1}96%{opacity:.9}97%{opacity:1} }
-  body { animation: flicker 8s infinite; }
-
   @keyframes blink { 0%,100%{opacity:1}50%{opacity:0} }
   @keyframes fadeUp { from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)} }
-
   .container { max-width: 900px; margin: 0 auto; padding: 0 24px; }
 
   /* TOPBAR */
-  .topbar {
-    position: fixed; top:0; left:0; right:0; z-index:100;
-    background: rgba(4,6,15,0.96);
-    border-bottom: 1px solid var(--border);
-    backdrop-filter: blur(4px);
-    padding: 10px 24px;
-    display: flex; align-items: center; justify-content: space-between;
-  }
+  .topbar { position: fixed; top:0; left:0; right:0; z-index:100; background: rgba(4,6,15,0.96); border-bottom: 1px solid var(--border); backdrop-filter: blur(4px); padding: 10px 24px; display: flex; align-items: center; justify-content: space-between; }
   .topbar-brand { color: var(--red); font-size: 13px; }
   .topbar-brand em { color: var(--text-dim); font-style: normal; }
   .topbar-brand b { color: var(--blue); font-weight: 400; }
@@ -69,45 +32,14 @@
   .topbar-nav a::before { content: './'; color: var(--red-dim); }
 
   /* HERO */
-  .hero {
-    min-height: 100vh;
-    display: flex; flex-direction: column; justify-content: center;
-    padding: 80px 24px 60px;
-    max-width: 900px; margin: 0 auto;
-  }
+  .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 80px 24px 60px; max-width: 900px; margin: 0 auto; }
   .prompt-line { color: var(--text-dim); font-size: 13px; margin-bottom: 8px; }
-  .pl-user { color: var(--red); }
-  .pl-host { color: var(--blue); }
-  .pl-path { color: var(--accent); }
-
-  .hero-name {
-    font-family: 'VT323', monospace;
-    font-size: clamp(52px, 10vw, 96px);
-    color: var(--red);
-    line-height: 1; letter-spacing: 2px;
-    text-shadow: 0 0 30px rgba(255,42,42,0.5), 0 0 70px rgba(255,42,42,0.2);
-    animation: fadeUp .8s ease both;
-    margin-bottom: 4px;
-  }
-  .hero-cursor {
-    display: inline-block; width: 10px; height: 18px;
-    background: var(--red); margin-left: 4px; vertical-align: middle;
-    animation: blink 1s step-end infinite;
-  }
+  .pl-user { color: var(--red); } .pl-host { color: var(--blue); } .pl-path { color: var(--accent); }
+  .hero-name { font-family: 'VT323', monospace; font-size: clamp(36px, 7vw, 68px); color: var(--red); line-height: 1; letter-spacing: 2px; text-shadow: 0 0 30px rgba(255,42,42,0.5), 0 0 70px rgba(255,42,42,0.2); animation: fadeUp .8s ease both; margin-bottom: 4px; }
+  .hero-cursor { display: inline-block; width: 10px; height: 18px; background: var(--red); margin-left: 4px; vertical-align: middle; animation: blink 1s step-end infinite; }
   .hero-tags { font-size: 13px; margin-bottom: 32px; animation: fadeUp .8s .15s ease both; }
-  .hero-tags .tag {
-    display: inline-block;
-    border: 1px solid var(--border);
-    color: var(--blue); padding: 2px 8px;
-    margin-right: 8px; margin-bottom: 6px;
-    font-size: 11px; letter-spacing: .08em;
-  }
-  .hero-summary {
-    max-width: 560px; color: var(--text); font-size: 13px; line-height: 1.8;
-    animation: fadeUp .8s .3s ease both;
-    border-left: 2px solid var(--red-dim);
-    padding-left: 16px; margin-bottom: 40px;
-  }
+  .hero-tags .tag { display: inline-block; border: 1px solid var(--border); color: var(--blue); padding: 2px 8px; margin-right: 8px; margin-bottom: 6px; font-size: 11px; letter-spacing: .08em; }
+  .hero-summary { max-width: 560px; color: var(--text); font-size: 13px; line-height: 1.8; animation: fadeUp .8s .3s ease both; border-left: 2px solid var(--red-dim); padding-left: 16px; margin-bottom: 40px; }
   .contact-row { display: flex; flex-wrap: wrap; gap: 16px; animation: fadeUp .8s .45s ease both; }
   .contact-row a { color: var(--text-dim); text-decoration: none; font-size: 12px; display: flex; align-items: center; gap: 6px; transition: color .2s; }
   .contact-row a:hover { color: var(--red); }
@@ -121,7 +53,7 @@
   .section-header::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
   /* SKILLS */
-  .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+  .skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
   .skill-block { border: 1px solid var(--border); padding: 16px; background: var(--surface); transition: border-color .2s, background .2s; }
   .skill-block:hover { border-color: var(--red-dim); background: var(--red-faint); }
   .skill-cat { font-size: 10px; letter-spacing: .12em; color: var(--text-dim); margin-bottom: 8px; text-transform: uppercase; }
@@ -152,10 +84,8 @@
   .edu-school { font-size: 11px; color: var(--text-dim); margin-bottom: 16px; }
   .edu-meta { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 20px; }
   .edu-meta-item { font-size: 11px; color: var(--text-dim); }
-  .edu-meta-item strong { color: var(--blue); }
   .edu-meta-item a { color: var(--blue); text-decoration: none; border-bottom: 1px solid rgba(77,121,255,0.3); transition: color .2s; }
   .edu-meta-item a:hover { color: var(--red); }
-
   .course-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 6px; margin-top: 12px; }
   .course-item { font-size: 11px; color: var(--text-dim); padding: 4px 8px; border-left: 2px solid var(--border); transition: border-color .2s, color .2s; }
   .course-item:hover { border-color: var(--red-dim); color: var(--text); }
@@ -163,6 +93,24 @@
   /* SCROLL REVEAL */
   .reveal { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
   .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* TERMINAL */
+  .terminal-easter { max-width: 900px; margin: 0 auto; padding: 0 24px 60px; }
+  .terminal-bar { background: #1c1c2e; border: 1px solid #2a2a4a; border-bottom: 1px solid #111128; padding: 6px 10px; display: flex; align-items: center; justify-content: space-between; }
+  .t-title { font-size: 11px; color: #8888aa; letter-spacing: .04em; }
+  .t-actions { display: flex; gap: 4px; }
+  .t-btn { font-size: 11px; color: #555577; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; cursor: default; user-select: none; border: 1px solid #2a2a4a; }
+  .t-btn:hover { color: #aaaacc; border-color: #4444aa; }
+  .terminal-body { background: #0d0d1a; border: 1px solid #2a2a4a; border-top: none; padding: 14px 16px; min-height: 140px; font-size: 12px; cursor: text; overflow-y: auto; max-height: 320px; }
+  .term-line { display: flex; gap: 8px; margin-bottom: 2px; align-items: baseline; }
+  .term-prompt { color: var(--red); white-space: nowrap; flex-shrink: 0; }
+  .term-cmd { color: var(--text); }
+  .term-output { color: var(--text-dim); margin: 2px 0 6px 0; line-height: 1.7; }
+  .term-output .t-out { display: block; }
+  .term-output .t-err { display: block; color: var(--red); }
+  .term-output .t-success { display: block; color: #5af78e; }
+  .term-input-row { display: flex; gap: 8px; align-items: center; margin-top: 2px; }
+  .term-input { background: transparent; border: none; outline: none; color: var(--text); font-family: 'JetBrains Mono', monospace; font-size: 12px; flex: 1; caret-color: var(--red); }
 
   /* FOOTER */
   footer { border-top: 1px solid var(--border); padding: 32px 24px; text-align: center; font-size: 11px; color: var(--text-dim); }
@@ -174,6 +122,7 @@
     .exp-date { text-align: left; }
     .exp-content { padding-left: 0; }
     .topbar-nav { display: none; }
+    .skills-grid { grid-template-columns: repeat(2, 1fr); }
   }
 </style>
 </head>
@@ -223,13 +172,18 @@
         <div class="skill-items">
           <span class="skill-tag">JavaScript</span>
           <span class="skill-tag">TypeScript</span>
+          <span class="skill-tag">Python</span>
+          <span class="skill-tag">Java</span>
+          <span class="skill-tag">C#</span>
           <span class="skill-tag">C++</span>
+          <span class="skill-tag">GDScript</span>
           <span class="skill-tag">SQL</span>
         </div>
       </div>
       <div class="skill-block">
-        <div class="skill-cat">Backend</div>
+        <div class="skill-cat">Frameworks</div>
         <div class="skill-items">
+          <span class="skill-tag">React.js</span>
           <span class="skill-tag">Node.js</span>
           <span class="skill-tag">Sequelize</span>
           <span class="skill-tag">Mongoose</span>
@@ -237,11 +191,23 @@
         </div>
       </div>
       <div class="skill-block">
+        <div class="skill-cat">Dev Tools</div>
+        <div class="skill-items">
+          <span class="skill-tag">Git</span>
+          <span class="skill-tag">Godot</span>
+          <span class="skill-tag">Blender</span>
+          <span class="skill-tag">Unreal</span>
+          <span class="skill-tag">JetBrains</span>
+          <span class="skill-tag">VS Code</span>
+          <span class="skill-tag">Obsidian</span>
+        </div>
+      </div>
+      <div class="skill-block">
         <div class="skill-cat">Security</div>
         <div class="skill-items">
           <span class="skill-tag">AppSec</span>
           <span class="skill-tag">Network Sec</span>
-          <span class="skill-tag">Risk Mgmt</span>
+          <span class="skill-tag">Risk Management</span>
           <span class="skill-tag">Data Privacy</span>
         </div>
       </div>
@@ -252,23 +218,16 @@
           <span class="skill-tag">Servers &amp; OS</span>
           <span class="skill-tag">Data Networks</span>
           <span class="skill-tag">Cloud</span>
-        </div>
-      </div>
-      <div class="skill-block">
-        <div class="skill-cat">Dev Tools</div>
-        <div class="skill-items">
-          <span class="skill-tag">Git</span>
-          <span class="skill-tag">Godot</span>
-          <span class="skill-tag">Blender</span>
-          <span class="skill-tag">Unreal</span>
+          <span class="skill-tag">XR Development</span>
         </div>
       </div>
       <div class="skill-block">
         <div class="skill-cat">Concepts</div>
         <div class="skill-items">
-          <span class="skill-tag">OOP</span>
-          <span class="skill-tag">SW Engineering</span>
-          <span class="skill-tag">Databases</span>
+          <span class="skill-tag">Object Oriented Programming</span>
+          <span class="skill-tag">Software Engineering</span>
+          <span class="skill-tag">SQL Databases</span>
+          <span class="skill-tag">JSON/Document Databases</span>
           <span class="skill-tag">BI &amp; Analytics</span>
         </div>
       </div>
@@ -282,17 +241,17 @@
     <div class="section-header"><span class="cmd">$</span><h2>cat experience.log</h2></div>
     <div class="exp-list reveal">
       <div class="exp-item">
-        <div class="exp-date">May – Jun<br>2024</div>
+        <div class="exp-date">May &ndash; Jun<br>2024</div>
         <div class="exp-dot"></div>
         <div class="exp-content">
           <div class="exp-role">Developer</div>
           <div class="exp-company">theFIRMA &middot; Finland</div>
-          <div class="exp-desc">Back-end development on ProjectGate 2.0 — theFirma's internal staff web platform. Contributed to architecture decisions and core feature implementation.</div>
+          <div class="exp-desc">Back-end development on ProjectGate 2.0 &mdash; theFirma's internal staff web platform. Contributed to architecture decisions and core feature implementation.</div>
           <div class="exp-tech"><span>Back-End</span><span>Node.js</span><span>Web Dev</span></div>
         </div>
       </div>
       <div class="exp-item">
-        <div class="exp-date">Feb – Apr<br>2024</div>
+        <div class="exp-date">Feb &ndash; Apr<br>2024</div>
         <div class="exp-dot"></div>
         <div class="exp-content">
           <div class="exp-role">Turku Gamelab Developer</div>
@@ -302,7 +261,7 @@
         </div>
       </div>
       <div class="exp-item">
-        <div class="exp-date">Jun – Jul<br>2022</div>
+        <div class="exp-date">Jun &ndash; Jul<br>2022</div>
         <div class="exp-dot"></div>
         <div class="exp-content">
           <div class="exp-role">Web Server &amp; App Developer</div>
@@ -323,7 +282,7 @@
       <div class="edu-block">
         <div class="edu-degree">Bachelor of Business Administration</div>
         <div class="edu-prog">Degree Programme in Business Information Technology</div>
-        <div class="edu-school">Turku University of Applied Sciences &middot; Aug 2020 – Jun 2024</div>
+        <div class="edu-school">Turku University of Applied Sciences &middot; Aug 2020 &ndash; Jun 2024</div>
         <div class="edu-meta">
           <div class="edu-meta-item">Thesis: <a href="https://www.theseus.fi/handle/10024/863787" target="_blank">Godot &amp; procedural generation &#8599;</a></div>
         </div>
@@ -359,7 +318,7 @@
       <div style="border:1px solid var(--border);padding:20px;background:var(--surface);display:flex;flex-direction:column;gap:10px;margin-bottom:10px;">
         <div style="font-size:12px;color:var(--text-dim)">
           <span style="color:var(--red)">email</span> &nbsp;&nbsp;&nbsp; &#8594; &nbsp;
-          <a id="em" href="mailto:mlukkar@protonmail.com" style="color:var(--text);text-decoration:none;">mlukkar@protonmail.com</a>
+          <a href="mailto:mlukkar@protonmail.com" style="color:var(--text);text-decoration:none;">mlukkar@protonmail.com</a>
         </div>
         <div style="font-size:12px;color:var(--text-dim)">
           <span style="color:var(--red)">linkedin</span> &nbsp; &#8594; &nbsp;
@@ -375,30 +334,45 @@
   </div>
 </section>
 
+<!-- TERMINAL EASTER EGG -->
+<div class="terminal-easter" id="terminal">
+  <div class="terminal-bar">
+    <span class="t-title">mika@lukkarinen: ~/portfolio</span>
+    <span class="t-actions">
+      <span class="t-btn">&#8722;</span>
+      <span class="t-btn">&#9633;</span>
+      <span class="t-btn">&#10005;</span>
+    </span>
+  </div>
+  <div class="terminal-body" id="term-body">
+    <div class="term-line"><span class="term-prompt">mika_lukkarinen:~$</span>&nbsp;<span class="term-cmd" id="boot-cmd"></span></div>
+    <div class="term-output" id="term-output"></div>
+    <div class="term-input-row" id="term-input-row" style="display:none">
+      <span class="term-prompt">mika_lukkarinen:~$</span>
+      <input id="term-input" class="term-input" type="text" autocomplete="off" spellcheck="false" />
+    </div>
+  </div>
+</div>
+
 <footer>
   <span class="prompt">mika_lukkarinen:~$ </span>exit 0 &nbsp;|&nbsp; &copy; 2026 Mika Lukkarinen
 </footer>
 
 <script>
-  // Scroll reveal — visible by default, enhanced with IntersectionObserver if available
+  // SCROLL REVEAL
   var reveals = document.querySelectorAll('.reveal');
-
   if ('IntersectionObserver' in window) {
     var io = new IntersectionObserver(function(entries) {
       entries.forEach(function(e) {
-        if (e.isIntersecting) {
-          e.target.classList.add('visible');
-          io.unobserve(e.target);
-        }
+        if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
       });
     }, { threshold: 0.08 });
     reveals.forEach(function(r) { io.observe(r); });
   } else {
-    // Fallback: just show everything
     reveals.forEach(function(r) { r.classList.add('visible'); });
   }
 
-  // Glitch effect on name
+  // GLITCH
   setInterval(function() {
     var name = document.querySelector('.hero-name');
     if (name && Math.random() < 0.05) {
@@ -409,7 +383,186 @@
     }
   }, 1500);
 
+  // TERMINAL EASTER EGG
+  var bootCmd    = document.getElementById('boot-cmd');
+  var termOutput = document.getElementById('term-output');
+  var termInputRow = document.getElementById('term-input-row');
+  var termInput  = document.getElementById('term-input');
+  var termBody   = document.getElementById('term-body');
 
+  var bootLines = [
+    { cmd: 'source ~/.bashrc',            delay: 0 },
+    { cmd: 'cd ~/portfolio && ls -la',    delay: 700 },
+  ];
+
+  var bootOutput = [
+    { type: 'out',     text: 'total 5' },
+    { type: 'out',     text: 'drwxr-xr-x  skills/' },
+    { type: 'out',     text: 'drwxr-xr-x  experience/' },
+    { type: 'out',     text: 'drwxr-xr-x  education/' },
+    { type: 'out',     text: 'drwxr-xr-x  contact/' },
+    { type: 'out',     text: '-rw-r--r--  index.html' },
+    { type: 'out',     text: '' },
+    { type: 'out',     text: '[  0.1s] loading skills.............. ok' },
+    { type: 'out',     text: '[  0.2s] loading experience........... ok' },
+    { type: 'out',     text: '[  0.3s] loading education............ ok' },
+    { type: 'out',     text: '[  0.4s] loading contact.............. ok' },
+    { type: 'success', text: '[  0.5s] portfolio ready.' },
+  ];
+
+  var responses = {
+    'help': [
+      { type: 'out', text: 'available commands:' },
+      { type: 'out', text: '  help       -- you just ran it' },
+      { type: 'out', text: '  whoami     -- you already know' },
+      { type: 'out', text: '  skills     -- what I bring to the table' },
+      { type: 'out', text: '  contact    -- lets talk' },
+      { type: 'out', text: '  secret     -- ...' },
+      { type: 'out', text: '  clear      -- wipe the slate' },
+    ],
+    'whoami': [
+      { type: 'success', text: 'mika lukkarinen' },
+      { type: 'out',     text: 'software dev. infosec enthusiast. occasional game dev.' },
+      { type: 'out',     text: 'based in espoo, finland.' },
+    ],
+    'skills': [
+      { type: 'out', text: 'js . ts . python . java . c# . c++ . gdscript . sql' },
+      { type: 'out', text: 'react . node . rest apis . godot . unreal . blender' },
+      { type: 'out', text: 'appsec . network sec . risk management . linux . xr dev' },
+    ],
+    'contact': [
+      { type: 'out', text: 'email    -> mlukkar@protonmail.com' },
+      { type: 'out', text: 'linkedin -> linkedin.com/in/mikal-352800296' },
+      { type: 'out', text: 'location -> espoo, finland' },
+    ],
+    'secret': [
+      { type: 'success', text: '...you found it.' },
+      { type: 'out',     text: "there's nothing else hidden. probably." },
+    ],
+    'clear': null,
+    'ls': [
+      { type: 'out', text: 'skills/   experience/   education/   contact/' },
+    ],
+    'pwd': [
+      { type: 'out', text: '/home/mika_lukkarinen' },
+    ],
+    'sudo rm -rf /': [
+      { type: 'err', text: 'nice try.' },
+    ],
+    'exit': [
+      { type: 'out', text: 'there is no escape.' },
+    ],
+    'cat readme.md': [
+      { type: 'out', text: '# mika lukkarinen -- portfolio' },
+      { type: 'out', text: 'built with html, css, and too much free time.' },
+    ],
+  };
+
+  function typeCmd(text, el, cb) {
+    var i = 0;
+    function tick() {
+      if (i < text.length) { el.textContent += text[i++]; setTimeout(tick, 55); }
+      else cb();
+    }
+    tick();
+  }
+
+  function streamOutput(lines, idx, cb) {
+    if (idx >= lines.length) { cb(); return; }
+    var line = lines[idx];
+    if (line.text === '') {
+      termOutput.appendChild(document.createElement('br'));
+      setTimeout(function() { streamOutput(lines, idx + 1, cb); }, 60);
+      return;
+    }
+    var el = document.createElement('span');
+    el.className = 't-' + line.type;
+    el.textContent = line.text;
+    termOutput.appendChild(el);
+    setTimeout(function() { streamOutput(lines, idx + 1, cb); }, 90);
+  }
+
+  function runBoot(cmdIdx) {
+    if (cmdIdx >= bootLines.length) {
+      streamOutput(bootOutput, 0, function() {
+        termInputRow.style.display = 'flex';
+      });
+      return;
+    }
+    var entry = bootLines[cmdIdx];
+    setTimeout(function() {
+      var lineEl;
+      if (cmdIdx === 0) {
+        lineEl = bootCmd;
+      } else {
+        var row = document.createElement('div');
+        row.className = 'term-line';
+        row.style.marginBottom = '2px';
+        var prompt = document.createElement('span');
+        prompt.className = 'term-prompt';
+        prompt.textContent = 'mika_lukkarinen:~$';
+        var cmd = document.createElement('span');
+        cmd.className = 'term-cmd';
+        row.appendChild(prompt);
+        row.appendChild(document.createTextNode('\u00a0'));
+        row.appendChild(cmd);
+        termOutput.appendChild(row);
+        lineEl = cmd;
+      }
+      typeCmd(entry.cmd, lineEl, function() {
+        setTimeout(function() { runBoot(cmdIdx + 1); }, 300);
+      });
+    }, entry.delay);
+  }
+
+  setTimeout(function() { runBoot(0); }, 400);
+
+  termBody.addEventListener('click', function() { termInput.focus(); });
+
+  function sanitize(str) {
+    return str.slice(0, 100).replace(/[<>&"'`]/g, '');
+  }
+
+  termInput.addEventListener('keydown', function(e) {
+    if (e.key !== 'Enter') return;
+    var raw = termInput.value.trim().toLowerCase();
+    termInput.value = '';
+    if (!raw) return;
+    var cmd = sanitize(raw);
+    if (!cmd) return;
+
+    var cmdLine = document.createElement('div');
+    cmdLine.className = 'term-line';
+    var promptSpan = document.createElement('span');
+    promptSpan.className = 'term-prompt';
+    promptSpan.textContent = 'mika_lukkarinen:~$';
+    var cmdSpan = document.createElement('span');
+    cmdSpan.className = 'term-cmd';
+    cmdSpan.textContent = cmd;
+    cmdLine.appendChild(promptSpan);
+    cmdLine.appendChild(document.createTextNode('\u00a0'));
+    cmdLine.appendChild(cmdSpan);
+    termOutput.appendChild(cmdLine);
+
+    if (cmd === 'clear') { termOutput.innerHTML = ''; return; }
+
+    var reply = responses[cmd];
+    if (reply) {
+      reply.forEach(function(line) {
+        var el = document.createElement('span');
+        el.className = 't-' + line.type;
+        el.textContent = line.text;
+        termOutput.appendChild(el);
+      });
+    } else {
+      var err = document.createElement('span');
+      err.className = 't-err';
+      err.textContent = 'command not found: ' + cmd + ' -- try "help"';
+      termOutput.appendChild(err);
+    }
+
+    termBody.scrollTop = termBody.scrollHeight;
+  });
 </script>
 </body>
 </html>
