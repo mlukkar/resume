@@ -19,8 +19,8 @@
     --bg: #04060f;
     --surface: #070b18;
     --border: #0f1a3a;
-    --text: #c8d4f0;
-    --text-dim: #3a4f7a;
+    --text: #ffb3c6;
+    --text-dim: #a0607a;
   }
 
   html { scroll-behavior: smooth; }
@@ -130,12 +130,13 @@
   .skill-tag { font-size: 11px; color: var(--red); background: rgba(255,42,42,0.07); border: 1px solid rgba(255,42,42,0.22); padding: 2px 8px; }
 
   /* EXPERIENCE */
-  .exp-list { display: flex; flex-direction: column; gap: 32px; }
-  .exp-item { display: grid; grid-template-columns: 140px 1fr; gap: 0 24px; position: relative; }
-  .exp-item::before { content: ''; position: absolute; left: 132px; top: 0; bottom: -32px; width: 1px; background: var(--border); }
+  .exp-list { display: flex; flex-direction: column; gap: 0; }
+  .exp-item { display: grid; grid-template-columns: 110px 1fr; gap: 0 20px; position: relative; padding-bottom: 32px; }
+  .exp-item::before { content: ''; position: absolute; left: 114px; top: 0; bottom: 0; width: 1px; background: var(--border); }
+  .exp-item:last-child { padding-bottom: 0; }
   .exp-item:last-child::before { display: none; }
-  .exp-date { font-size: 11px; color: var(--text-dim); padding-top: 2px; text-align: right; }
-  .exp-dot { position: absolute; left: 128px; top: 6px; width: 9px; height: 9px; border: 1px solid var(--red); background: var(--bg); box-shadow: 0 0 8px rgba(255,42,42,0.5); }
+  .exp-date { font-size: 10px; color: var(--text-dim); padding-top: 4px; text-align: right; line-height: 1.4; white-space: nowrap; }
+  .exp-dot { position: absolute; left: 110px; top: 6px; width: 9px; height: 9px; border: 1px solid var(--red); background: var(--bg); box-shadow: 0 0 8px rgba(255,42,42,0.5); }
   .exp-content { padding-left: 24px; }
   .exp-role { font-size: 15px; color: var(--red); margin-bottom: 2px; font-weight: 500; }
   .exp-company { font-size: 11px; color: var(--blue); margin-bottom: 8px; letter-spacing: .06em; }
@@ -206,7 +207,7 @@
     and server-side scripting to application security and network hardening.
   </p>
   <div class="contact-row">
-    <a href="#contact">mlukkar@protonmail.com</a>
+    <a href="mailto:mlukkar@protonmail.com">mlukkar@protonmail.com</a>
     <a href="https://www.linkedin.com/in/mikal-352800296" target="_blank">linkedin</a>
     <a>Espoo, Finland</a>
   </div>
@@ -281,7 +282,7 @@
     <div class="section-header"><span class="cmd">$</span><h2>cat experience.log</h2></div>
     <div class="exp-list reveal">
       <div class="exp-item">
-        <div class="exp-date">May – Jun 2024</div>
+        <div class="exp-date">May – Jun<br>2024</div>
         <div class="exp-dot"></div>
         <div class="exp-content">
           <div class="exp-role">Developer</div>
@@ -291,7 +292,7 @@
         </div>
       </div>
       <div class="exp-item">
-        <div class="exp-date">Feb – Apr 2024</div>
+        <div class="exp-date">Feb – Apr<br>2024</div>
         <div class="exp-dot"></div>
         <div class="exp-content">
           <div class="exp-role">Turku Gamelab Developer</div>
@@ -301,7 +302,7 @@
         </div>
       </div>
       <div class="exp-item">
-        <div class="exp-date">Jun – Jul 2022</div>
+        <div class="exp-date">Jun – Jul<br>2022</div>
         <div class="exp-dot"></div>
         <div class="exp-content">
           <div class="exp-role">Web Server &amp; App Developer</div>
@@ -358,7 +359,7 @@
       <div style="border:1px solid var(--border);padding:20px;background:var(--surface);display:flex;flex-direction:column;gap:10px;margin-bottom:10px;">
         <div style="font-size:12px;color:var(--text-dim)">
           <span style="color:var(--red)">email</span> &nbsp;&nbsp;&nbsp; &#8594; &nbsp;
-          <a id="em" href="#" style="color:var(--text);text-decoration:none;"></a>
+          <a id="em" href="mailto:mlukkar@protonmail.com" style="color:var(--text);text-decoration:none;">mlukkar@protonmail.com</a>
         </div>
         <div style="font-size:12px;color:var(--text-dim)">
           <span style="color:var(--red)">linkedin</span> &nbsp; &#8594; &nbsp;
@@ -375,7 +376,7 @@
 </section>
 
 <footer>
-  <span class="prompt">mika@lukkarinen:~$ </span>exit 0 &nbsp;|&nbsp; &copy; 2026 Mika Lukkarinen
+  <span class="prompt">mika_lukkarinen:~$ </span>exit 0 &nbsp;|&nbsp; &copy; 2026 Mika Lukkarinen
 </footer>
 
 <script>
@@ -408,14 +409,7 @@
     }
   }, 1500);
 
-  // Assemble email to avoid Cloudflare mangling
-  var u = 'mlukkar';
-  var d = 'protonmail' + '.' + 'com';
-  var el = document.getElementById('em');
-  if (el) {
-    el.href = 'mai' + 'lto:' + u + '\x40' + d;
-    el.textContent = u + '\x40' + d;
-  }
+
 </script>
 </body>
 </html>
